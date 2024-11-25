@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  app:
+    container_name: jsonbin-app
+    tty: true
+    build: .
+    ports:
+      - 1323:1323
+    restart: on-failure
+    volumes:
+      - .:/app
+    networks:
+      - epic_network
+networks:
+  epic_network:
+    driver: bridge
