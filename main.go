@@ -30,7 +30,7 @@ func main() {
 
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"https://jsonbin.sepiksel.com", "http://localhost:3000"},
+		AllowOrigins: []string{"https://jsonbin.notblessy.com", "http://localhost:3000"},
 		AllowHeaders: []string{"*"},
 	}))
 
