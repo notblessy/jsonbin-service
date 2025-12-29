@@ -9,7 +9,7 @@ import (
 	"github.com/notblessy/handler"
 	"github.com/notblessy/model"
 	"github.com/sirupsen/logrus"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -21,9 +21,9 @@ func init() {
 }
 
 func main() {
-	mysql := connectMysql()
+	db := connectPostgres()
 
-	err := mysql.AutoMigrate(&model.PublicJSON{})
+	err := db.AutoMigrate(&model.PublicJSON{})
 	if err != nil {
 		logrus.Fatal("Failed to migrate database")
 	}
@@ -34,7 +34,7 @@ func main() {
 		AllowHeaders: []string{"*"},
 	}))
 
-	h := handler.New(mysql)
+	h := handler.New(db)
 
 	e.POST("/api", h.SaveJSON)
 	e.GET("/api/:id", h.FindByID)
@@ -42,10 +42,10 @@ func main() {
 	e.Logger.Fatal(e.Start(":8080"))
 }
 
-func connectMysql() *gorm.DB {
+func connectPostgres() *gorm.DB {
 	dsn := os.Getenv("DATABASE_URL")
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		logrus.Fatal("Failed to connect to database")
 	}
